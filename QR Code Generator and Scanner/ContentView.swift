@@ -6,16 +6,32 @@
 //
 
 import SwiftUI
+import CoreImage
+import CoreImage.CIFilterBuiltins
 
-struct ContentView: View {
+struct QRCodeView: View {
+  @Binding var QRCodeImage : UIImage?
+  @Binding var text : String
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+            Image(uiImage: QRCodeImage!)
+            .resizable()
+                .frame(width: 200,height: 200)
+                .cornerRadius(5)
+                .padding()
+          Text("\(text) QR Code")
+            .padding(/*@START_MENU_TOKEN@*/EdgeInsets()/*@END_MENU_TOKEN@*/)
+
         }
-        .padding()
+    }
+}
+struct ContentView: View {
+  @State private var text  = ""
+  @State private var QRCodeImage : UIImage?
+    var body: some View {
+        ZStack {
+LinearGradient
+        }
     }
 }
 
