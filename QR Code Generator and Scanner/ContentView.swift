@@ -30,8 +30,26 @@ struct ContentView: View {
   @State private var QRCodeImage : UIImage?
     var body: some View {
         ZStack {
-LinearGradient
-        }
+          LinearGradient(gradient: Gradient(colors: [.purple, .blue]), startPoint: . leading, endPoint: .trailing)
+          VStack{
+//            Spacer()
+            Text("QR Code Generator")
+              .font(.largeTitle)
+              .padding()
+            TextField("Enter Text", text: $text)
+              .font(.headline)
+              .padding()
+              .background(.ultraThinMaterial)
+              .clipShape(Capsule())
+              .padding()
+
+            Button("Generator QR Code"){
+
+            }
+            .font(.headline)
+
+          }
+        }.ignoresSafeArea(.all)
     }
 }
 
