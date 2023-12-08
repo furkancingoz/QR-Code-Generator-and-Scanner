@@ -16,42 +16,45 @@ struct QRCodeView: View {
   var body: some View {
     VStack {
       Image(uiImage: QRCodeImage!)
-          .resizable()
-          .frame(width: 200, height: 200)
-          .cornerRadius(5)
-          .shadow(color: .gray, radius: 5)
-          .scaleEffect(startAnimation ? 1 : 0.8)
-          .onAppear {
-              withAnimation(.spring(response: 0.5, dampingFraction: 0.5)) {
-                  startAnimation = true
-              }
+        .resizable()
+        .frame(width: 300, height: 300)
+        .cornerRadius(5)
+        .shadow(color: .gray, radius: 5)
+        .scaleEffect(startAnimation ? 1 : 0.6)
+        .onAppear {
+          withAnimation(.spring(response: 0.5, dampingFraction: 0.5)) {
+            startAnimation = true
           }
-          .background(
-              Image("paperTexture")
-                  .resizable()
-                  .aspectRatio(contentMode: .fill)
-          )
+
+        }.padding()
+
       Text("\(text)")
+        .foregroundColor(.white)
         .padding()
 
-    }
+    }.background(
+      Image("paperTexture")
+        .resizable()
+        .aspectRatio(contentMode: .fill)
+
+    )
   }
 }
 struct ContentView: View {
   @State private var text  = ""
   @State private var QRCodeImage : UIImage?
   @State private var startAnimation: Bool = false
+  let gradientColors = Gradient(colors: [.blue, .white])
+
   var body: some View {
     ZStack {
       LinearGradient(
-        colors: [
-          .purple,
-          .blue],
-        startPoint: startAnimation ? .topLeading : .bottomLeading,
-        endPoint: startAnimation ? .bottomTrailing : .topTrailing
-      )
+                  gradient: gradientColors,
+                  startPoint: startAnimation ? .topLeading : .bottomLeading,
+                  endPoint: startAnimation ? .bottomTrailing : .topTrailing
+              )
       .onAppear {
-        withAnimation(.linear(duration: 5.0).repeatForever()) {
+        withAnimation(.linear(duration: 20.0).repeatForever()) {
           startAnimation.toggle()
         }
       }
@@ -59,7 +62,10 @@ struct ContentView: View {
         Spacer()
         Text("QR Code Generator")
           .font(.largeTitle)
-          .padding()
+              .padding()
+              .background(Color.blue) // Arkaplan rengini istediğiniz bir renkle değiştirebilirsiniz
+              .foregroundColor(Color.black) // Metin rengini değiştirebilirsiniz
+              .cornerRadius(10)
         TextField("Enter Text", text: $text)
           .font(.headline)
           .padding()
@@ -76,18 +82,26 @@ struct ContentView: View {
         .clipShape(Capsule())
         .padding()
 
+        var coordinator = Coordinator()
+
         if QRCodeImage != nil {
           QRCodeView(QRCodeImage: $QRCodeImage, text: $text)
 
-          Button("Save QR Code to Photos"){
-            guard let renderedIamge = ImageRenderer(content: QRCodeView(QRCodeImage: $QRCodeImage, text: $text)).uiImage else{ return
-            }
-            UIImageWriteToSavedPhotosAlbum(renderedIamge, nil, nil, nil)
-          }
-        }
-        else {
+          Button("Save QR Code to Photos") {
+                     guard let renderedImage = ImageRenderer(content: QRCodeView(QRCodeImage: $QRCodeImage, text: $text)).uiImage else { return }
+                     DispatchQueue.main.async {
+                         UIImageWriteToSavedPhotosAlbum(renderedImage, coordinator, #selector(Coordinator.image(_:didFinishSavingWithError:contextInfo:)), nil)
+                     }
+                 }
+          .font(.headline)
+          .foregroundStyle(.primary)
+          .buttonStyle(.bordered)
+          .clipShape(Capsule())
+          .padding()
 
         }
+
+
 
         Spacer()
         //MARK: -  BANNER VİEW
@@ -95,21 +109,36 @@ struct ContentView: View {
       }
     }.ignoresSafeArea(.all)
   }
-  func generatorQRCode(text:String) -> Data? {
-    let filter = CIFilter.qrCodeGenerator()
+  //MARK: - FUNC
+  func generatorQRCode(text: String) -> Data? {
+      let filter = CIFilter.qrCodeGenerator()
+      guard let data = text.data(using: .utf8, allowLossyConversion: false) else {
+          return nil
+      }
 
-    guard let data = text.data(using: .ascii,allowLossyConversion: false) else {
-      return nil
-    }
+      filter.message = data
 
-    filter.message = data
+      guard let ciImage = filter.outputImage else { return nil }
+      let transform = CGAffineTransform(scaleX: 12, y: 12) // Ölçeklendirme faktörünü artırabilirsiniz.
+      let scaledCIImage = ciImage.transformed(by: transform)
 
-    guard let ciimage = filter.outputImage else { return nil }
-    let transform = CGAffineTransform(scaleX: 10, y: 10)
-    let scaledImage = ciimage.transformed(by: transform)
-    let uiimage = UIImage(ciImage: scaledImage)
-    return uiimage.pngData()!
+      let context = CIContext(options: nil)
+      guard let cgImage = context.createCGImage(scaledCIImage, from: scaledCIImage.extent) else {
+          return nil
+      }
+
+      let uiImage = UIImage(cgImage: cgImage)
+      return uiImage.jpegData(compressionQuality: 1.0) // PNG yerine yüksek kaliteli JPEG kullanın.
   }
+}
+class Coordinator: UIViewController {
+    @objc func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
+        if let error = error {
+            print("Error: \(error.localizedDescription)")
+        } else {
+            print("QR Code Saved to Photos")
+        }
+    }
 }
 #Preview {
   ContentView()
