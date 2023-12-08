@@ -12,15 +12,27 @@ import CoreImage.CIFilterBuiltins
 struct QRCodeView: View {
   @Binding var QRCodeImage : UIImage?
   @Binding var text : String
+  @State private var startAnimation: Bool = false
   var body: some View {
     VStack {
       Image(uiImage: QRCodeImage!)
-        .resizable()
-        .frame(width: 200,height: 200)
-        .cornerRadius(5)
+          .resizable()
+          .frame(width: 200, height: 200)
+          .cornerRadius(5)
+          .shadow(color: .gray, radius: 5)
+          .scaleEffect(startAnimation ? 1 : 0.8)
+          .onAppear {
+              withAnimation(.spring(response: 0.5, dampingFraction: 0.5)) {
+                  startAnimation = true
+              }
+          }
+          .background(
+              Image("paperTexture")
+                  .resizable()
+                  .aspectRatio(contentMode: .fill)
+          )
+      Text("\(text)")
         .padding()
-      Text("\(text) QR Code")
-        .padding(/*@START_MENU_TOKEN@*/EdgeInsets()/*@END_MENU_TOKEN@*/)
 
     }
   }
@@ -28,9 +40,21 @@ struct QRCodeView: View {
 struct ContentView: View {
   @State private var text  = ""
   @State private var QRCodeImage : UIImage?
+  @State private var startAnimation: Bool = false
   var body: some View {
     ZStack {
-      LinearGradient(gradient: Gradient(colors: [.blue, .orange]), startPoint: .topLeading, endPoint: .bottomTrailing)
+      LinearGradient(
+        colors: [
+          .purple,
+          .blue],
+        startPoint: startAnimation ? .topLeading : .bottomLeading,
+        endPoint: startAnimation ? .bottomTrailing : .topTrailing
+      )
+      .onAppear {
+        withAnimation(.linear(duration: 5.0).repeatForever()) {
+          startAnimation.toggle()
+        }
+      }
       VStack{
         Spacer()
         Text("QR Code Generator")
@@ -61,8 +85,8 @@ struct ContentView: View {
             UIImageWriteToSavedPhotosAlbum(renderedIamge, nil, nil, nil)
           }
         }
-          else {
-          
+        else {
+
         }
 
         Spacer()
@@ -87,6 +111,6 @@ struct ContentView: View {
     return uiimage.pngData()!
   }
 }
-  #Preview {
-    ContentView()
-  }
+#Preview {
+  ContentView()
+}
