@@ -14,7 +14,7 @@ struct QR_Code_Generator_and_ScannerApp: App {
   var body: some Scene {
     WindowGroup {
       
-      QRGenerateView()
+      ContenView()
       
       
     }

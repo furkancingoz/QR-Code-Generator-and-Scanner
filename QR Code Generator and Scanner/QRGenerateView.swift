@@ -11,10 +11,12 @@ import CoreImage.CIFilterBuiltins
 import StoreKit
 
 struct QRCodeView: View {
+
   @Binding var QRCodeImage : UIImage?
   @Binding var text : String
   @State private var startAnimation: Bool = false
   var body: some View {
+    
     VStack {
       Image(uiImage: QRCodeImage!)
         .resizable()
