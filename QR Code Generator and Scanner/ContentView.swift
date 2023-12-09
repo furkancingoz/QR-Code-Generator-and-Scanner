@@ -8,6 +8,7 @@
 import SwiftUI
 import CoreImage
 import CoreImage.CIFilterBuiltins
+import StoreKit
 
 struct QRCodeView: View {
   @Binding var QRCodeImage : UIImage?
@@ -36,80 +37,119 @@ struct QRCodeView: View {
       Image("paperTexture")
         .resizable()
         .aspectRatio(contentMode: .fill)
-
+        .onTapGesture {
+                        hideKeyboard()
+                    }
     )
+  }
+  func hideKeyboard() {
+      UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
   }
 }
 struct ContentView: View {
   @State private var text  = ""
+  @State private var buttonText = ""
   @State private var QRCodeImage : UIImage?
   @State private var startAnimation: Bool = false
-  let gradientColors = Gradient(colors: [.blue, .white])
+  @State private var showAlert = false
+  let gradientColors = Gradient(colors: [.indigo, .orange])
+  public init() {}
 
   var body: some View {
-    ZStack {
-      LinearGradient(
-                  gradient: gradientColors,
-                  startPoint: startAnimation ? .topLeading : .bottomLeading,
-                  endPoint: startAnimation ? .bottomTrailing : .topTrailing
-              )
-      .onAppear {
-        withAnimation(.linear(duration: 20.0).repeatForever()) {
-          startAnimation.toggle()
+
+    NavigationView {
+      ZStack {
+
+        LinearGradient(
+          colors: [
+            .orange,
+            .cyan],
+          startPoint: startAnimation ? .topLeading : .bottomTrailing,
+          endPoint: startAnimation ? .bottomLeading : .topLeading
+        )
+        .onAppear {
+          withAnimation(.linear(duration: 5.0).repeatForever()) {
+            startAnimation.toggle()
+          }
         }
-      }
-      VStack{
-        Spacer()
-        Text("QR Code Generator")
-          .font(.largeTitle)
-              .padding()
-              .background(Color.blue) // Arkaplan rengini istediğiniz bir renkle değiştirebilirsiniz
-              .foregroundColor(Color.black) // Metin rengini değiştirebilirsiniz
-              .cornerRadius(10)
-        TextField("Enter Text", text: $text)
-          .font(.headline)
-          .padding()
-          .background(.ultraThinMaterial)
-          .clipShape(Capsule())
-          .padding()
 
-        Button("Generator QR Code"){
-          QRCodeImage = UIImage(data: generatorQRCode(text: text)!)!
-        }
-        .font(.headline)
-        .foregroundStyle(.primary)
-        .buttonStyle(.bordered)
-        .clipShape(Capsule())
-        .padding()
 
-        var coordinator = Coordinator()
 
-        if QRCodeImage != nil {
-          QRCodeView(QRCodeImage: $QRCodeImage, text: $text)
+        VStack{
+          Spacer()
+          Text("QR Code Generator")
+            .font(.largeTitle)
+            .fontWeight(.heavy)
+          TextField("Enter Text", text: $text)
+            .font(.headline)
+            .padding()
+            .background(.ultraThinMaterial)
+            .clipShape(Capsule())
+            .padding()
 
-          Button("Save QR Code to Photos") {
-                     guard let renderedImage = ImageRenderer(content: QRCodeView(QRCodeImage: $QRCodeImage, text: $text)).uiImage else { return }
-                     DispatchQueue.main.async {
-                         UIImageWriteToSavedPhotosAlbum(renderedImage, coordinator, #selector(Coordinator.image(_:didFinishSavingWithError:contextInfo:)), nil)
-                     }
-                 }
+          Button("Generator QR Code"){
+            QRCodeImage = UIImage(data: generatorQRCode(text: text)!)!
+            hideKeyboard()
+          }
           .font(.headline)
           .foregroundStyle(.primary)
           .buttonStyle(.bordered)
           .clipShape(Capsule())
           .padding()
 
+          var coordinator = Coordinator()
+
+          if QRCodeImage != nil {
+            QRCodeView(QRCodeImage: $QRCodeImage, text: $text)
+
+            Button("Save QR Code to Photos") {
+              guard let renderedImage = ImageRenderer(content: QRCodeView(QRCodeImage: $QRCodeImage, text: $text)).uiImage
+              else { return }
+              DispatchQueue.main.async {
+                UIImageWriteToSavedPhotosAlbum(renderedImage, coordinator, #selector(Coordinator.image(_:didFinishSavingWithError:contextInfo:)), nil)
+              }
+
+              showAlert = true
+            }
+            .font(.headline)
+            .foregroundStyle(.primary)
+            .buttonStyle(.bordered)
+            .clipShape(Capsule())
+            .padding()
+            .alert(isPresented: $showAlert) {
+                            Alert(
+                                title: Text("Save"),
+                                message: Text("QR Code successfully saved."),
+                                dismissButton: .default(Text("OK"))
+                            )
+                        }
+                     }
+
+          Spacer()
+          //MARK: -  BANNER VİEW
         }
-
-
-
-        Spacer()
-        //MARK: -  BANNER VİEW
-
+        
+            }.navigationBarItems(trailing: Button(action: {
+              requestToRate()
+          }) {
+              Image(systemName: "star") // Sistem yıldız ikonu
+                  .resizable()
+                  .frame(width: 25, height: 25) // İkon boyutunu ayarla
+          })
+            .ignoresSafeArea(.all)
       }
-    }.ignoresSafeArea(.all)
-  }
+}
+
+
+
+
   //MARK: - FUNC
+  func hideKeyboard() {
+      UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+  }
+  func requestToRate() {
+      SKStoreReviewController.requestReview()
+  }
   func generatorQRCode(text: String) -> Data? {
       let filter = CIFilter.qrCodeGenerator()
       guard let data = text.data(using: .utf8, allowLossyConversion: false) else {
@@ -131,12 +171,16 @@ struct ContentView: View {
       return uiImage.jpegData(compressionQuality: 1.0) // PNG yerine yüksek kaliteli JPEG kullanın.
   }
 }
-class Coordinator: UIViewController {
+class Coordinator: NSObject {
+    var onSave: ((Bool) -> Void)?
+
     @objc func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
         if let error = error {
             print("Error: \(error.localizedDescription)")
+            onSave?(false)
         } else {
             print("QR Code Saved to Photos")
+            onSave?(true)
         }
     }
 }
