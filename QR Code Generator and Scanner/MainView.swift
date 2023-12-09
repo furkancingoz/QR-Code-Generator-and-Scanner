@@ -9,18 +9,7 @@ import SwiftUI
 
 struct MainView: View {
     var body: some View {
-      TabView{
-        QRGenerateView()
-          .tabItem {
-            Image(systemName: "qrcode")
-            Text("Generator")
-          }
-        ScannerView()
-          .tabItem {
-            Image(systemName: "qrcode.viewfinder")
-            Text("Scanner")
-          }
-      }
+        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
     }
 }
 
