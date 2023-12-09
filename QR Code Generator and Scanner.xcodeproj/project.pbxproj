@@ -8,25 +8,25 @@
 
 /* Begin PBXBuildFile section */
 		650AD04E2B246B9400651784 /* ContenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650AD04D2B246B9400651784 /* ContenView.swift */; };
-		650AD0502B24880500651784 /* TabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650AD04F2B24880500651784 /* TabView.swift */; };
-		650AD0522B2488B300651784 /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650AD0512B2488B300651784 /* SwiftUIView.swift */; };
+		650AD0502B24880500651784 /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650AD04F2B24880500651784 /* TabBarView.swift */; };
 		650AD0562B24952D00651784 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650AD0552B24952D00651784 /* MainView.swift */; };
 		65124D852B23A4410035A469 /* QR_Code_Generator_and_ScannerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65124D842B23A4410035A469 /* QR_Code_Generator_and_ScannerApp.swift */; };
 		65124D872B23A4410035A469 /* QRGenerateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65124D862B23A4410035A469 /* QRGenerateView.swift */; };
 		65124D892B23A4430035A469 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65124D882B23A4430035A469 /* Assets.xcassets */; };
 		65124D8C2B23A4430035A469 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65124D8B2B23A4430035A469 /* Preview Assets.xcassets */; };
+		65D787532B24999300BAE700 /* ScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D787522B24999300BAE700 /* ScannerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		650AD04D2B246B9400651784 /* ContenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContenView.swift; sourceTree = "<group>"; };
-		650AD04F2B24880500651784 /* TabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabView.swift; sourceTree = "<group>"; };
-		650AD0512B2488B300651784 /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIView.swift; sourceTree = "<group>"; };
+		650AD04F2B24880500651784 /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
 		650AD0552B24952D00651784 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		65124D812B23A4410035A469 /* QR Code Generator and Scanner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "QR Code Generator and Scanner.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		65124D842B23A4410035A469 /* QR_Code_Generator_and_ScannerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QR_Code_Generator_and_ScannerApp.swift; sourceTree = "<group>"; };
 		65124D862B23A4410035A469 /* QRGenerateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRGenerateView.swift; sourceTree = "<group>"; };
 		65124D882B23A4430035A469 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		65124D8B2B23A4430035A469 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		65D787522B24999300BAE700 /* ScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,9 +62,9 @@
 				65124D842B23A4410035A469 /* QR_Code_Generator_and_ScannerApp.swift */,
 				65124D862B23A4410035A469 /* QRGenerateView.swift */,
 				650AD04D2B246B9400651784 /* ContenView.swift */,
-				650AD04F2B24880500651784 /* TabView.swift */,
 				650AD0552B24952D00651784 /* MainView.swift */,
-				650AD0512B2488B300651784 /* SwiftUIView.swift */,
+				650AD04F2B24880500651784 /* TabBarView.swift */,
+				65D787522B24999300BAE700 /* ScannerView.swift */,
 				65124D882B23A4430035A469 /* Assets.xcassets */,
 				65124D8A2B23A4430035A469 /* Preview Content */,
 			);
@@ -155,10 +155,10 @@
 			files = (
 				650AD0562B24952D00651784 /* MainView.swift in Sources */,
 				650AD04E2B246B9400651784 /* ContenView.swift in Sources */,
-				650AD0502B24880500651784 /* TabView.swift in Sources */,
+				650AD0502B24880500651784 /* TabBarView.swift in Sources */,
+				65D787532B24999300BAE700 /* ScannerView.swift in Sources */,
 				65124D872B23A4410035A469 /* QRGenerateView.swift in Sources */,
 				65124D852B23A4410035A469 /* QR_Code_Generator_and_ScannerApp.swift in Sources */,
-				650AD0522B2488B300651784 /* SwiftUIView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

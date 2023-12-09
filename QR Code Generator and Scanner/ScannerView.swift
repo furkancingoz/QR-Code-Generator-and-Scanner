@@ -2,7 +2,7 @@
 //  ScannerView.swift
 //  QR Code Generator and Scanner
 //
-//  Created by Furkan Cingöz on 8.12.2023.
+//  Created by Furkan Cingöz on 9.12.2023.
 //
 
 import SwiftUI

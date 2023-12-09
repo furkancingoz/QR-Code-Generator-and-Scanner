@@ -48,6 +48,7 @@ struct QRCodeView: View {
       UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
   }
 }
+
 struct QRGenerateView: View {
   @State private var text  = ""
   @State private var buttonText = ""
@@ -173,6 +174,7 @@ struct QRGenerateView: View {
       return uiImage.jpegData(compressionQuality: 1.0) // PNG yerine yüksek kaliteli JPEG kullanın.
   }
 }
+
 class Coordinator: NSObject {
     var onSave: ((Bool) -> Void)?
 
@@ -186,6 +188,7 @@ class Coordinator: NSObject {
         }
     }
 }
+
 #Preview {
   QRGenerateView()
 }

@@ -8,11 +8,24 @@
 import SwiftUI
 
 struct MainView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
+  @State var selectedTabItem: TabIcon = .Qrcode
+  var body: some View {
+         ZStack(alignment: .bottom) {
+             // View'ları seçili tab'a göre göster
+             switch selectedTabItem {
+             case .Qrcode:
+                 QRGenerateView()
+             case .Scanner:
+                 ScannerView()
+             }
 
+             // TabBarView'de seçili tab'ı güncelle
+             TabBarView(selectedTabItem: $selectedTabItem)
+                 .padding(.bottom, 30)
+         }
+         .edgesIgnoringSafeArea(.bottom)
+     }
+ }
 #Preview {
     MainView()
 }
