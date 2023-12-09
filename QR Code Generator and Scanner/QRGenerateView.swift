@@ -46,7 +46,7 @@ struct QRCodeView: View {
       UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
   }
 }
-struct ContentView: View {
+struct QRGenerateView: View {
   @State private var text  = ""
   @State private var buttonText = ""
   @State private var QRCodeImage : UIImage?
@@ -185,5 +185,5 @@ class Coordinator: NSObject {
     }
 }
 #Preview {
-  ContentView()
+  QRGenerateView()
 }
