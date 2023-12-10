@@ -13,8 +13,12 @@ struct ScannerView: View {
 
   @State private var isScanning : Bool = false
   @State private var session : AVCaptureSession = .init()
-
+  @State private var cameraPermission : Permission = .idle
+  //SCANER OUT PUT
   @State private var qrOutput : AVCaptureMetadataOutput = .init()
+  //ERROR PROP.
+  @State private var errorMessages : String = ""
+  @State private var showError : Bool = false
   var body: some View {
     VStack{
       Button{
@@ -84,12 +88,38 @@ struct ScannerView: View {
       Spacer(minLength: 45)
     }
     .padding(15)
-    
+    //check camera permison but when view is visible
+    .onAppear(perform: {
+      checkCameraPermission()
+    })
+    .alert(errorMessages, isPresented: $showError) {
+
+    }
+
   }
   //activation scanner animation method
   func activateScannerAnimation(){
     withAnimation(.easeOut(duration: 0.80).delay(0.1).repeatForever(autoreverses: true)) {
       isScanning = true
+    }
+  }
+
+  //CHECK THE CAMERA PERMISSON
+  func checkCameraPermission(){
+    Task{
+      switch AVCaptureDevice.authorizationStatus(for: .video) {
+      case .authorized:
+        cameraPermission = .approved
+      case .notDetermined:
+        if await AVCaptureDevice.requestAccess(for: .video) {
+          cameraPermission = .approved
+        } else {
+          cameraPermission = .denied
+        }
+      case .denied,.restricted:
+        cameraPermission = .denied
+      default : break
+      }
     }
   }
 }
