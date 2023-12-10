@@ -24,6 +24,10 @@ struct ScannerView: View {
 
   //settings
   @Environment(\.openURL) private var openURL
+
+  @StateObject private var qrDelegate  = QRScannerDelegate()
+
+  @State private var scannedCode : String = ""
   var body: some View {
     VStack{
       Button{
@@ -51,8 +55,8 @@ struct ScannerView: View {
         let size = $0.size
 
         ZStack{
-          CameraView(frameSize: size, session: $session)
-
+          CameraView(frameSize: CGSize(width: size.width, height: size.width), session: $session)
+            .scaleEffect(0.97)
           ForEach(0...4, id: \.self){ index in
             let rotation = Double(index) * 90
             RoundedRectangle(cornerRadius: 2, style: .circular)
@@ -83,6 +87,10 @@ struct ScannerView: View {
 
       Button{
         //action
+        if session.isRunning && cameraPermission == .approved {
+          reactiveCamera()
+          activateScannerAnimation()
+        }
       } label: {
         Image(systemName: "qrcode.viewfinder")
           .font(.largeTitle)
@@ -111,11 +119,34 @@ struct ScannerView: View {
         }
       }
     }
+    .onChange(of: qrDelegate.scannedCode) { newValue in
+      if let code = newValue {
+        scannedCode = code
+        session.stopRunning()
+        deactivateScannerAnimation()
+        // clearing the data on delegate
+        qrDelegate.scannedCode = nil
+      }
+    }
   }
+
+  func reactiveCamera(){
+    DispatchQueue.global(qos:.background).async {
+      session.startRunning()
+
+    }
+  }
+
   //activation scanner animation method
   func activateScannerAnimation(){
     withAnimation(.easeOut(duration: 0.80).delay(0.1).repeatForever(autoreverses: true)) {
       isScanning = true
+    }
+  }
+  //de- activation scanner animation method
+  func deactivateScannerAnimation(){
+    withAnimation(.easeOut(duration: 0.80)) {
+      isScanning = false
     }
   }
 
@@ -125,7 +156,12 @@ struct ScannerView: View {
       switch AVCaptureDevice.authorizationStatus(for: .video) {
       case .authorized:
         cameraPermission = .approved
-        setupCamera()
+        if session.inputs.isEmpty {
+          setupCamera()       
+        } else {
+          //already existing one
+          session.startRunning()
+        }
       case .notDetermined:
         if await AVCaptureDevice.requestAccess(for: .video) {
           cameraPermission = .approved
@@ -141,22 +177,22 @@ struct ScannerView: View {
       }
     }
 
-//setup
+    //setup
     func setupCamera(){
       do{
-//find back camera
-        guard let  device = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInUltraWideCamera], mediaType: .audio, position: .back).devices.first else {
-          presentError("UNKNOW ERROR")
+        //find back camera
+        guard let  device = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: .video, position: .back).devices.first else {
+          presentError("UNKNOW DEVICE ERROR")
           return
         }
 
 
-//camera input
+        //camera input
         let input = try AVCaptureDeviceInput(device: device)
         //extra safety
         //check
         guard session.canAddInput(input), session.canAddOutput(qrOutput) else {
-          presentError("UNKNOW ERROR")
+          presentError("UNKNOW INPUT OUTPUT ERROR")
           return
         }
 
@@ -165,6 +201,13 @@ struct ScannerView: View {
         session.addInput(input)
         session.addOutput(qrOutput)
         qrOutput.metadataObjectTypes = [.qr]
+
+        qrOutput.setMetadataObjectsDelegate(qrDelegate, queue: .main)
+        session.commitConfiguration()
+        DispatchQueue.global(qos: .background).async {
+          session.startRunning()
+        }
+        activateScannerAnimation()
       } catch {
 
       }
