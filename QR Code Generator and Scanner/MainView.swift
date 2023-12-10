@@ -8,23 +8,39 @@
 import SwiftUI
 
 struct MainView: View {
-  @State var selectedTabItem: TabIcon = .Qrcode
+//  @State var selectedTabItem: TabIcon = .Qrcode
   var body: some View {
-    
-    ZStack(alignment: .bottom) {
-      // View'ları seçili tab'a göre göster
-      switch selectedTabItem {
-      case .Qrcode:
-        QRGenerateView()
-      case .Scanner:
-        ScannerView()
-      }
-      
-      // TabBarView'de seçili tab'ı güncelle
-      TabBarView(selectedTabItem: $selectedTabItem)
-        .padding(.bottom,20)
+    TabView{
+    QRGenerateView()
+    .tabItem {
+    Image(systemName: "qrcode")
+    Text("QR Code Generator")
     }
-    .edgesIgnoringSafeArea(.all)
+
+    ScannerView()
+    .tabItem {
+    Image(systemName: "qrcode.viewfinder")
+    Text("Scanner")
+    }
+    }
+    .tabViewStyle(.page)
+//    VStack{
+//      ZStack(alignment: .bottom) {
+//        // View'ları seçili tab'a göre göster
+//        switch selectedTabItem {
+//        case .Qrcode:
+//          QRGenerateView()
+//        case .Scanner:
+//          ScannerView()
+//        }
+//
+//        // TabBarView'de seçili tab'ı güncelle
+//Spacer()
+//        TabBarView(selectedTabItem: $selectedTabItem)
+//          .padding(.bottom,25)
+//      }
+//      .edgesIgnoringSafeArea(.all)
+//    }
   }
 }
 #Preview {
