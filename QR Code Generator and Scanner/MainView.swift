@@ -21,7 +21,7 @@ struct MainView: View {
 
              // TabBarView'de seçili tab'ı güncelle
              TabBarView(selectedTabItem: $selectedTabItem)
-                 .padding(.bottom, 30)
+                 .padding(.bottom, 25)
          }
          .edgesIgnoringSafeArea(.bottom)
      }

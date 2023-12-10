@@ -26,7 +26,7 @@ struct TabBarView: View {
         ForEach(tabItems){ item  in
           Spacer()
           Image(systemName: item.icon)
-            .foregroundColor(.black)
+            .foregroundColor(.white)
             .onTapGesture {
               selectedTabItem = item .tabIcon
               Xoffset =  CGFloat(item.index) * 70
@@ -35,10 +35,10 @@ struct TabBarView: View {
         }
         .frame(width: 23.3)
       }
-      .frame(height: 70)
-      .background(.white,in: RoundedRectangle(cornerRadius: 10))
+      .frame(height: 60)
+      .background(.black,in: RoundedRectangle(cornerRadius: 10))
       .overlay(alignment: .bottomLeading){
-        Circle().frame(width: 10,height: 10).foregroundColor(.black)
+        Circle().frame(width: 10,height: 10).foregroundColor(.white)
           .offset(x: 30, y: -5)
           .offset(x: Xoffset)
       }
