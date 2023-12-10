@@ -31,6 +31,7 @@
 		65D787522B24999300BAE700 /* ScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerView.swift; sourceTree = "<group>"; };
 		65F6E4512B261A7000F83464 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		65FBB4F92B2654C80058869D /* Permission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Permission.swift; sourceTree = "<group>"; };
+		65FBB4FB2B2657380058869D /* QR-Code-Generator-and-Scanner-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "QR-Code-Generator-and-Scanner-Info.plist"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +64,7 @@
 		65124D832B23A4410035A469 /* QR Code Generator and Scanner */ = {
 			isa = PBXGroup;
 			children = (
+				65FBB4FB2B2657380058869D /* QR-Code-Generator-and-Scanner-Info.plist */,
 				65124D842B23A4410035A469 /* QR_Code_Generator_and_ScannerApp.swift */,
 				65124D862B23A4410035A469 /* QRGenerateView.swift */,
 				650AD04D2B246B9400651784 /* ContenView.swift */,
@@ -320,9 +322,11 @@
 				DEVELOPMENT_TEAM = Y9XJT8FRMC;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "QR-Code-Generator-and-Scanner-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "QR Code Generator and Scanner";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Permission is required to save QR codes to your Photo Library for easy access and secure storage.";
+				INFOPLIST_KEY_NSCameraUsageDescription = "We need camera access to scan QR codes. This permission enables quick and easy access to information. The camera is used only for scanning; images are not recorded or shared. Please allow camera access";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "To save the QR codes you create in the app, we need access to your photo album. This permission allows you to easily store and later use your QR codes. Access to the photo album is used exclusively for saving QR codes and is not used for any other purpose.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -357,9 +361,11 @@
 				DEVELOPMENT_TEAM = Y9XJT8FRMC;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "QR-Code-Generator-and-Scanner-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "QR Code Generator and Scanner";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Permission is required to save QR codes to your Photo Library for easy access and secure storage.";
+				INFOPLIST_KEY_NSCameraUsageDescription = "We need camera access to scan QR codes. This permission enables quick and easy access to information. The camera is used only for scanning; images are not recorded or shared. Please allow camera access";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "To save the QR codes you create in the app, we need access to your photo album. This permission allows you to easily store and later use your QR codes. Access to the photo album is used exclusively for saving QR codes and is not used for any other purpose.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

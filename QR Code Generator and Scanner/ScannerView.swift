@@ -9,16 +9,21 @@ import SwiftUI
 import AVKit
 
 struct ScannerView: View {
-  //qecode scanner properties
 
+  //qecode scanner properties
   @State private var isScanning : Bool = false
   @State private var session : AVCaptureSession = .init()
   @State private var cameraPermission : Permission = .idle
+
   //SCANER OUT PUT
   @State private var qrOutput : AVCaptureMetadataOutput = .init()
+
   //ERROR PROP.
   @State private var errorMessages : String = ""
   @State private var showError : Bool = false
+
+  //settings
+  @Environment(\.openURL) private var openURL
   var body: some View {
     VStack{
       Button{
@@ -93,6 +98,15 @@ struct ScannerView: View {
       checkCameraPermission()
     })
     .alert(errorMessages, isPresented: $showError) {
+      if cameraPermission == .denied {
+        Button("Settings"){
+          let settingsString = UIApplication.openSettingsURLString
+          if let settingsURL = URL(string: settingsString){
+            openURL(settingsURL)
+          }
+
+        }
+      }
 
     }
 
@@ -115,11 +129,18 @@ struct ScannerView: View {
           cameraPermission = .approved
         } else {
           cameraPermission = .denied
+          presentError("Please Provide Access to Camera for scanning codes")
         }
       case .denied,.restricted:
         cameraPermission = .denied
+        presentError("Please Provide Access to Camera for scanning codes")
       default : break
       }
+    }
+
+    func presentError(_ message : String){
+      errorMessages = message
+      showError.toggle()
     }
   }
 }

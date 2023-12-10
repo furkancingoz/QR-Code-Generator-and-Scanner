@@ -23,7 +23,7 @@ struct MainView: View {
     Text("Scanner")
     }
     }
-    .tabViewStyle(.page)
+//    .tabViewStyle(.page)
 //    VStack{
 //      ZStack(alignment: .bottom) {
 //        // View'ları seçili tab'a göre göster
