@@ -75,6 +75,7 @@ struct ScannerView: View {
           .font(.largeTitle)
           .foregroundColor(.gray)
       }
+      .padding(.bottom,50)
 
       Spacer(minLength: 45)
     }
