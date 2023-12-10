@@ -88,7 +88,7 @@ struct QRGenerateView: View {
             .clipShape(Capsule())
             .padding()
           
-          Button("Generator QR Code"){
+          Button("Generate QR Code"){
             QRCodeImage = UIImage(data: generatorQRCode(text: text)!)!
             hideKeyboard()
           }

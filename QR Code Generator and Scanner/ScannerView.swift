@@ -6,12 +6,15 @@
 //
 
 import SwiftUI
+import AVKit
 
 struct ScannerView: View {
   //qecode scanner properties
 
   @State private var isScanning : Bool = false
+  @State private var session : AVCaptureSession = .init()
 
+  @State private var qrOutput : AVCaptureMetadataOutput = .init()
   var body: some View {
     VStack{
       Button{
@@ -39,6 +42,7 @@ struct ScannerView: View {
         let size = $0.size
 
         ZStack{
+          CameraView(frameSize: size, session: $session)
 
           ForEach(0...4, id: \.self){ index in
             let rotation = Double(index) * 90
