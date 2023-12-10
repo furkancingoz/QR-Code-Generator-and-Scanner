@@ -30,14 +30,6 @@ struct ScannerView: View {
   @State private var scannedCode : String = ""
   var body: some View {
     VStack{
-      Button{
-
-      } label: {
-        Image(systemName: "xmark")
-          .font(.title3)
-          .foregroundColor(.blue)
-      }
-      .frame(maxWidth: .infinity,alignment: .leading)
 
       Text("Place the QR Code inside the area")
         .font(.title3)
@@ -85,9 +77,22 @@ struct ScannerView: View {
 
       Spacer(minLength: 0)
 
+      Text(scannedCode.isEmpty ? "No QR Code Detected" : scannedCode)
+          .font(.title3)
+          .foregroundColor(.white.opacity(0.8))
+          .padding()
+          .contextMenu {
+              Button(action: {
+                  UIPasteboard.general.string = scannedCode
+              }) {
+                  Text("Copy to Clipboard")
+                  Image(systemName: "doc.on.doc")
+              }
+          }
+
       Button{
         //action
-        if session.isRunning && cameraPermission == .approved {
+        if !session.isRunning && cameraPermission == .approved {
           reactiveCamera()
           activateScannerAnimation()
         }
@@ -130,10 +135,12 @@ struct ScannerView: View {
     }
   }
 
-  func reactiveCamera(){
-    DispatchQueue.global(qos:.background).async {
+  func reactiveCamera() {
+    DispatchQueue.global(qos: .background).async {
+      if session.isRunning {
+        session.stopRunning()
+      }
       session.startRunning()
-
     }
   }
 
@@ -157,10 +164,10 @@ struct ScannerView: View {
       case .authorized:
         cameraPermission = .approved
         if session.inputs.isEmpty {
-          setupCamera()       
+          setupCamera()
         } else {
           //already existing one
-          session.startRunning()
+          self.session.startRunning()
         }
       case .notDetermined:
         if await AVCaptureDevice.requestAccess(for: .video) {
