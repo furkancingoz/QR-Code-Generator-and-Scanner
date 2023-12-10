@@ -36,7 +36,7 @@ struct ContenView: View {
 
   var body: some View {
     if isWelcomeScreenOver {
-      QRGenerateView()
+      MainView()
     } else {
 
 
@@ -116,7 +116,7 @@ struct ContenView: View {
               .cornerRadius(16)
               .padding(.horizontal,16)
               .foregroundColor(.white)
-          }.background(NavigationLink(destination: QRGenerateView().navigationBarHidden(true), isActive: $isActive) { EmptyView() }.hidden())
+          }.background(NavigationLink(destination: MainView().navigationBarHidden(true), isActive: $isActive) { EmptyView() }.hidden())
 
         }
       }
