@@ -31,9 +31,42 @@ struct ScannerView: View {
       Spacer(minLength: 0)
 
       //MARK: - SCANNER
+      GeometryReader {
+        let size = $0.size
+
+        ZStack{
+
+          RoundedRectangle(cornerRadius: 2, style: .circular)
+          //trim edge
+            .trim(from: 0.61,to: 0.64)
+            .stroke(style: StrokeStyle(lineWidth: 5,lineCap: .round,lineJoin:.round))
+
+          RoundedRectangle(cornerRadius: 2, style: .circular)
+          //trim edge
+            .trim(from: 0.61,to: 0.64)
+            .stroke(style: StrokeStyle(lineWidth: 5,lineCap: .round,lineJoin:.round))
+            .rotationEffect(.init(degrees: 90))
+          RoundedRectangle(cornerRadius: 2, style: .circular)
+          //trim edge
+            .trim(from: 0.61,to: 0.64)
+            .stroke(style: StrokeStyle(lineWidth: 5,lineCap: .round,lineJoin:.round))
+            .rotationEffect(.init(degrees: 180))
+          RoundedRectangle(cornerRadius: 2, style: .circular)
+          //trim edge
+            .trim(from: 0.61,to: 0.64)
+            .stroke(style: StrokeStyle(lineWidth: 5,lineCap: .round,lineJoin:.round))
+            .rotationEffect(.init(degrees: 270))
+
+        }
+        //square shape
+        .frame(width: size.width, height: size.width)
+        //center
+        .frame(maxWidth: .infinity,maxHeight: .infinity)
+
+      }
+
 
       Spacer(minLength: 0)
-
 
       Button{
         //action
