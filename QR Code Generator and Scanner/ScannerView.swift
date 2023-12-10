@@ -104,12 +104,13 @@ struct ScannerView: View {
           if let settingsURL = URL(string: settingsString){
             openURL(settingsURL)
           }
+        }
+
+        Button("Cancel", role: .cancel){
 
         }
       }
-
     }
-
   }
   //activation scanner animation method
   func activateScannerAnimation(){
@@ -124,9 +125,11 @@ struct ScannerView: View {
       switch AVCaptureDevice.authorizationStatus(for: .video) {
       case .authorized:
         cameraPermission = .approved
+        setupCamera()
       case .notDetermined:
         if await AVCaptureDevice.requestAccess(for: .video) {
           cameraPermission = .approved
+          setupCamera()
         } else {
           cameraPermission = .denied
           presentError("Please Provide Access to Camera for scanning codes")
@@ -138,6 +141,36 @@ struct ScannerView: View {
       }
     }
 
+//setup
+    func setupCamera(){
+      do{
+//find back camera
+        guard let  device = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInUltraWideCamera], mediaType: .audio, position: .back).devices.first else {
+          presentError("UNKNOW ERROR")
+          return
+        }
+
+
+//camera input
+        let input = try AVCaptureDeviceInput(device: device)
+        //extra safety
+        //check
+        guard session.canAddInput(input), session.canAddOutput(qrOutput) else {
+          presentError("UNKNOW ERROR")
+          return
+        }
+
+        //addin input and output camera session
+        session.beginConfiguration()
+        session.addInput(input)
+        session.addOutput(qrOutput)
+        qrOutput.metadataObjectTypes = [.qr]
+      } catch {
+
+      }
+    }
+
+    //present Error
     func presentError(_ message : String){
       errorMessages = message
       showError.toggle()

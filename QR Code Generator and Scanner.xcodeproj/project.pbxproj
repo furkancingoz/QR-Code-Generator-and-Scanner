@@ -17,6 +17,7 @@
 		65D787532B24999300BAE700 /* ScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D787522B24999300BAE700 /* ScannerView.swift */; };
 		65F6E4522B261A7000F83464 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F6E4512B261A7000F83464 /* CameraView.swift */; };
 		65FBB4FA2B2654C80058869D /* Permission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FBB4F92B2654C80058869D /* Permission.swift */; };
+		65FBB4FD2B265FAF0058869D /* QRScannerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FBB4FC2B265FAE0058869D /* QRScannerDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		65F6E4512B261A7000F83464 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		65FBB4F92B2654C80058869D /* Permission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Permission.swift; sourceTree = "<group>"; };
 		65FBB4FB2B2657380058869D /* QR-Code-Generator-and-Scanner-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "QR-Code-Generator-and-Scanner-Info.plist"; sourceTree = SOURCE_ROOT; };
+		65FBB4FC2B265FAE0058869D /* QRScannerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRScannerDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +101,7 @@
 			isa = PBXGroup;
 			children = (
 				65FBB4F92B2654C80058869D /* Permission.swift */,
+				65FBB4FC2B265FAE0058869D /* QRScannerDelegate.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -184,6 +187,7 @@
 				65FBB4FA2B2654C80058869D /* Permission.swift in Sources */,
 				65D787532B24999300BAE700 /* ScannerView.swift in Sources */,
 				65124D872B23A4410035A469 /* QRGenerateView.swift in Sources */,
+				65FBB4FD2B265FAF0058869D /* QRScannerDelegate.swift in Sources */,
 				65124D852B23A4410035A469 /* QR_Code_Generator_and_ScannerApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
